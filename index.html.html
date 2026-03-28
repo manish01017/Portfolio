@@ -1,0 +1,859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Manish Pandey — Data Analytics Leader</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:wght@300;400;500&family=Fraunces:ital,wght@0,300;0,400;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #080b10;
+    --bg2: #0d1117;
+    --bg3: #111820;
+    --surface: #141c26;
+    --border: #1e2d3d;
+    --accent: #00d4ff;
+    --accent2: #7b61ff;
+    --accent3: #00ffb3;
+    --text: #e8edf3;
+    --muted: #6b8099;
+    --highlight: #c9f0ff;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Mono', monospace;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CUSTOM CURSOR */
+  .cursor {
+    position: fixed; width: 12px; height: 12px;
+    background: var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.2s, height 0.2s, background 0.2s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1px solid rgba(0,212,255,0.4); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.15s ease, width 0.3s, height 0.3s;
+  }
+  body:hover .cursor { opacity: 1; }
+
+  /* GRID BACKGROUND */
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,212,255,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,212,255,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none; z-index: 0;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 20px 60px;
+    background: rgba(8,11,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    animation: slideDown 0.6s ease both;
+  }
+  @keyframes slideDown { from { transform: translateY(-100%); opacity:0; } to { transform: translateY(0); opacity:1; } }
+
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.1rem;
+    letter-spacing: 0.15em; color: var(--accent);
+    text-transform: uppercase;
+  }
+  .nav-links { display: flex; gap: 36px; list-style: none; }
+  .nav-links a {
+    font-size: 0.72rem; letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--muted); text-decoration: none;
+    transition: color 0.2s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -4px; left: 0; right: 0;
+    height: 1px; background: var(--accent); transform: scaleX(0);
+    transition: transform 0.25s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+  .nav-links a:hover::after { transform: scaleX(1); }
+
+  /* HERO */
+  #hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 120px 60px 80px;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-tag {
+    font-size: 0.68rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 28px;
+    opacity: 0; animation: fadeUp 0.7s 0.3s ease both;
+  }
+  .hero-tag::before { content: '// '; opacity: 0.5; }
+
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3.5rem, 8vw, 7.5rem);
+    font-weight: 800; line-height: 0.95;
+    letter-spacing: -0.02em;
+    opacity: 0; animation: fadeUp 0.8s 0.5s ease both;
+  }
+  .hero-name span {
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero-title {
+    font-family: 'Fraunces', serif;
+    font-style: italic; font-weight: 300;
+    font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+    color: var(--muted); margin-top: 20px;
+    opacity: 0; animation: fadeUp 0.8s 0.7s ease both;
+  }
+
+  .hero-summary {
+    max-width: 580px; margin-top: 32px;
+    font-size: 0.85rem; line-height: 1.85;
+    color: #8ba4bf;
+    opacity: 0; animation: fadeUp 0.8s 0.9s ease both;
+  }
+
+  .hero-cta {
+    display: flex; gap: 16px; margin-top: 48px; flex-wrap: wrap;
+    opacity: 0; animation: fadeUp 0.8s 1.1s ease both;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 14px 28px; border-radius: 2px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+    text-decoration: none; cursor: none;
+    transition: all 0.25s;
+  }
+  .btn-primary {
+    background: var(--accent); color: var(--bg);
+    border: 1px solid var(--accent);
+  }
+  .btn-primary:hover { background: transparent; color: var(--accent); box-shadow: 0 0 30px rgba(0,212,255,0.3); }
+  .btn-outline {
+    background: transparent; color: var(--text);
+    border: 1px solid var(--border);
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-stats {
+    display: flex; gap: 48px; margin-top: 64px;
+    opacity: 0; animation: fadeUp 0.8s 1.3s ease both;
+    flex-wrap: wrap;
+  }
+  .stat-num {
+    font-family: 'Syne', sans-serif; font-size: 2.4rem; font-weight: 800;
+    color: var(--accent); line-height: 1;
+  }
+  .stat-label {
+    font-size: 0.65rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--muted); margin-top: 6px;
+  }
+
+  /* GLOW ORB */
+  .orb {
+    position: absolute; border-radius: 50%; filter: blur(80px);
+    pointer-events: none; animation: drift 12s ease-in-out infinite;
+  }
+  .orb1 { width: 500px; height: 500px; background: rgba(0,212,255,0.06); right: -100px; top: 10%; }
+  .orb2 { width: 350px; height: 350px; background: rgba(123,97,255,0.07); right: 20%; bottom: 10%; animation-delay: -4s; }
+  @keyframes drift {
+    0%, 100% { transform: translate(0,0); }
+    33% { transform: translate(-30px, 20px); }
+    66% { transform: translate(20px, -20px); }
+  }
+
+  @keyframes fadeUp { from { opacity:0; transform: translateY(30px); } to { opacity:1; transform: translateY(0); } }
+
+  /* SECTIONS */
+  section { position: relative; z-index: 1; }
+
+  .section-inner { max-width: 1100px; margin: 0 auto; padding: 100px 60px; }
+
+  .section-label {
+    font-size: 0.65rem; letter-spacing: 0.3em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 12px;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-label::before { content: ''; flex: none; width: 30px; height: 1px; background: var(--accent); }
+
+  .section-title {
+    font-family: 'Syne', sans-serif; font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 800; line-height: 1.1; margin-bottom: 56px;
+    letter-spacing: -0.02em;
+  }
+
+  /* ABOUT */
+  #about { background: var(--bg2); }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; }
+  .about-text p { font-size: 0.88rem; line-height: 1.9; color: #8ba4bf; margin-bottom: 20px; }
+  .about-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 28px; }
+  .tag {
+    padding: 6px 14px; border: 1px solid var(--border);
+    font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); border-radius: 1px;
+    transition: all 0.2s;
+  }
+  .tag:hover { border-color: var(--accent); color: var(--accent); }
+  .about-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 36px;
+  }
+  .about-card h3 {
+    font-family: 'Syne', sans-serif; font-weight: 700; font-size: 1rem;
+    margin-bottom: 20px; color: var(--accent);
+  }
+  .contact-row { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+  .contact-icon { color: var(--accent2); font-size: 1rem; margin-top: 2px; flex: none; }
+  .contact-row a { color: var(--text); text-decoration: none; font-size: 0.78rem; word-break: break-all; }
+  .contact-row a:hover { color: var(--accent); }
+  .contact-row span { font-size: 0.78rem; color: var(--text); }
+
+  /* SKILLS */
+  #skills { background: var(--bg); }
+  .skills-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .skill-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 28px 28px 24px;
+    transition: border-color 0.3s, transform 0.3s;
+    position: relative; overflow: hidden;
+  }
+  .skill-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transform: scaleX(0); transition: transform 0.35s;
+    transform-origin: left;
+  }
+  .skill-card:hover { border-color: rgba(0,212,255,0.3); transform: translateY(-4px); }
+  .skill-card:hover::before { transform: scaleX(1); }
+  .skill-cat {
+    font-size: 0.62rem; letter-spacing: 0.25em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 10px;
+  }
+  .skill-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 14px; }
+  .skill-pills { display: flex; flex-wrap: wrap; gap: 7px; }
+  .pill {
+    background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.15);
+    padding: 5px 12px; border-radius: 1px;
+    font-size: 0.68rem; color: var(--highlight); letter-spacing: 0.05em;
+  }
+
+  /* EXPERIENCE */
+  #experience { background: var(--bg2); }
+  .timeline { position: relative; }
+  .timeline::before {
+    content: ''; position: absolute; left: 20px; top: 0; bottom: 0; width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+  }
+  .timeline-item {
+    padding-left: 64px; margin-bottom: 56px; position: relative;
+  }
+  .timeline-dot {
+    position: absolute; left: 12px; top: 6px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--bg2); border: 2px solid var(--accent);
+    box-shadow: 0 0 12px rgba(0,212,255,0.4);
+    transition: box-shadow 0.3s;
+  }
+  .timeline-item:hover .timeline-dot { box-shadow: 0 0 24px rgba(0,212,255,0.7); }
+  .exp-header { display: flex; flex-wrap: wrap; gap: 12px; align-items: baseline; margin-bottom: 4px; }
+  .exp-role {
+    font-family: 'Syne', sans-serif; font-size: 1.1rem; font-weight: 700;
+  }
+  .exp-company {
+    font-size: 0.8rem; color: var(--accent); letter-spacing: 0.05em;
+  }
+  .exp-meta {
+    font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em;
+    text-transform: uppercase; margin-bottom: 18px; margin-top: 4px;
+  }
+  .exp-bullets { list-style: none; }
+  .exp-bullets li {
+    font-size: 0.82rem; line-height: 1.75; color: #8ba4bf;
+    padding-left: 20px; position: relative; margin-bottom: 8px;
+  }
+  .exp-bullets li::before {
+    content: '▸'; position: absolute; left: 0; color: var(--accent2);
+  }
+
+  /* PROJECTS */
+  #projects { background: var(--bg); }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
+  .project-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 32px;
+    transition: all 0.3s; position: relative; overflow: hidden;
+  }
+  .project-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(0,212,255,0.04), rgba(123,97,255,0.04));
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .project-card:hover { border-color: rgba(0,212,255,0.35); transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,0.4); }
+  .project-card:hover::after { opacity: 1; }
+  .project-num {
+    font-family: 'Syne', sans-serif; font-size: 2.5rem; font-weight: 800;
+    color: rgba(0,212,255,0.12); line-height: 1; margin-bottom: 16px;
+  }
+  .project-card h3 { font-family: 'Syne', sans-serif; font-size: 1rem; font-weight: 700; margin-bottom: 10px; }
+  .project-card p { font-size: 0.8rem; line-height: 1.75; color: #8ba4bf; margin-bottom: 18px; }
+  .project-tech { display: flex; flex-wrap: wrap; gap: 6px; }
+  .tech-tag {
+    background: rgba(123,97,255,0.1); border: 1px solid rgba(123,97,255,0.2);
+    padding: 4px 10px; font-size: 0.65rem;
+    color: #b8a8ff; letter-spacing: 0.07em; border-radius: 1px;
+  }
+
+  /* EDUCATION */
+  #education { background: var(--bg2); }
+  .edu-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 24px; }
+  .edu-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 32px;
+    transition: all 0.3s;
+  }
+  .edu-card:hover { border-color: rgba(0,255,179,0.3); transform: translateY(-4px); }
+  .edu-icon { font-size: 2rem; margin-bottom: 16px; }
+  .edu-card h3 { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 8px; }
+  .edu-card .school { font-size: 0.78rem; color: var(--accent3); margin-bottom: 4px; }
+  .edu-card .year { font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+  .edu-card .gpa { font-size: 0.72rem; color: var(--accent); margin-top: 8px; }
+  .certs-list { margin-top: 12px; }
+  .cert-item {
+    font-size: 0.75rem; color: #8ba4bf; padding: 6px 0;
+    border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 8px;
+  }
+  .cert-item:last-child { border-bottom: none; }
+  .cert-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--accent3); flex: none; }
+
+  /* CONTACT */
+  #contact { background: var(--bg); }
+  .contact-wrapper {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: start;
+  }
+  .contact-left p { font-size: 0.88rem; line-height: 1.85; color: #8ba4bf; margin-bottom: 36px; }
+  .contact-methods { display: flex; flex-direction: column; gap: 16px; }
+  .contact-method {
+    display: flex; align-items: center; gap: 16px;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 18px 22px;
+    transition: all 0.25s; text-decoration: none;
+  }
+  .contact-method:hover { border-color: var(--accent); transform: translateX(6px); }
+  .method-icon { font-size: 1.2rem; flex: none; }
+  .method-label { font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); }
+  .method-value { font-size: 0.82rem; color: var(--text); margin-top: 2px; }
+  .contact-right {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 4px; padding: 40px;
+  }
+  .contact-right h3 {
+    font-family: 'Syne', sans-serif; font-size: 1.2rem; font-weight: 700;
+    margin-bottom: 28px;
+  }
+  .form-group { margin-bottom: 20px; }
+  .form-group label { display: block; font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+  .form-group input, .form-group textarea {
+    width: 100%; background: var(--bg); border: 1px solid var(--border);
+    border-radius: 2px; padding: 12px 16px;
+    font-family: 'DM Mono', monospace; font-size: 0.8rem;
+    color: var(--text); outline: none;
+    transition: border-color 0.2s;
+    resize: vertical;
+  }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+  .form-group textarea { min-height: 100px; }
+  .form-submit {
+    width: 100%; padding: 14px;
+    background: var(--accent); border: none; border-radius: 2px;
+    font-family: 'DM Mono', monospace; font-size: 0.75rem;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--bg); cursor: none; transition: all 0.25s;
+  }
+  .form-submit:hover { background: var(--accent2); box-shadow: 0 0 30px rgba(123,97,255,0.4); }
+
+  /* FOOTER */
+  footer {
+    background: var(--bg2); border-top: 1px solid var(--border);
+    padding: 32px 60px; text-align: center;
+    font-size: 0.72rem; color: var(--muted); letter-spacing: 0.1em;
+  }
+  footer span { color: var(--accent); }
+
+  /* SCROLL REVEAL */
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+  .reveal-delay-4 { transition-delay: 0.4s; }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 2px; }
+
+  /* RESPONSIVE */
+  @media (max-width: 768px) {
+    nav { padding: 16px 24px; }
+    .nav-links { display: none; }
+    #hero { padding: 100px 24px 60px; }
+    .section-inner { padding: 70px 24px; }
+    .about-grid, .contact-wrapper { grid-template-columns: 1fr; gap: 36px; }
+    .hero-stats { gap: 28px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">MP</div>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="orb orb1"></div>
+  <div class="orb orb2"></div>
+  <div class="hero-tag">Data Analytics Leader</div>
+  <h1 class="hero-name">Manish<br><span>Pandey</span></h1>
+  <p class="hero-title">Turning data complexity into clarity — for 14+ years.</p>
+  <p class="hero-summary">
+    Data Analytics leader with expertise in SQL, Python, Snowflake, and AI-enabled automation across regulated financial services environments. Trusted by senior stakeholders at Citi, Fidelity, and beyond.
+  </p>
+  <div class="hero-cta">
+    <a href="#contact" class="btn btn-primary">↳ Get in Touch</a>
+    <a href="#experience" class="btn btn-outline">View Experience</a>
+  </div>
+  <div class="hero-stats">
+    <div>
+      <div class="stat-num">14+</div>
+      <div class="stat-label">Years Experience</div>
+    </div>
+    <div>
+      <div class="stat-num">50%</div>
+      <div class="stat-label">Reporting Effort Reduced</div>
+    </div>
+    <div>
+      <div class="stat-num">4</div>
+      <div class="stat-label">Global Employers</div>
+    </div>
+    <div>
+      <div class="stat-num">3.7</div>
+      <div class="stat-label">Master's GPA</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="section-inner">
+    <div class="section-label reveal">About</div>
+    <h2 class="section-title reveal">Who I Am</h2>
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p>
+          I'm a Data Analytics leader with 14+ years of experience delivering impactful analytics solutions across financial services. My work spans SQL and Python pipelines, automated dashboards, risk controls, and AI-enabled workflows.
+        </p>
+        <p>
+          I thrive in complex, regulated environments — partnering with senior stakeholders to transform ambiguous business problems into auditable, scalable analytics. I've driven measurable outcomes at Citi Bank and Fidelity International using platforms like Snowflake, Tableau, Power BI, and Azure.
+        </p>
+        <p>
+          Currently based in Oakville, Ontario, and open to new leadership opportunities in data, analytics, and AI automation.
+        </p>
+        <div class="about-tags">
+          <span class="tag">Risk Analytics</span>
+          <span class="tag">Regulatory Reporting</span>
+          <span class="tag">AI Automation</span>
+          <span class="tag">Executive Dashboards</span>
+          <span class="tag">Data Governance</span>
+          <span class="tag">Agile Delivery</span>
+        </div>
+      </div>
+      <div class="about-card reveal reveal-delay-2">
+        <h3>// Contact Details</h3>
+        <div class="contact-row">
+          <div class="contact-icon">✉</div>
+          <div><a href="/cdn-cgi/l/email-protection#a2cfc3cc8cd2c3ccc6c7db929392959a95e2c5cfc3cbce8cc1cdcf"><span class="__cf_email__" data-cfemail="84e9e5eaaaf4e5eae0e1fdb4b5b4b3bcb3c4e3e9e5ede8aae7ebe9">[email&#160;protected]</span></a></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">☎</div>
+          <div><span>+1-226-7244-355</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">⌖</div>
+          <div><span>Oakville, ON, Canada</span></div>
+        </div>
+        <div class="contact-row">
+          <div class="contact-icon">🔗</div>
+          <div><a href="https://linkedin.com/in/manishpandey0" target="_blank">linkedin.com/in/manishpandey0</a></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-inner">
+    <div class="section-label reveal">Core Skills</div>
+    <h2 class="section-title reveal">Technical Arsenal</h2>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <div class="skill-cat">Language</div>
+        <h3>SQL & Python</h3>
+        <div class="skill-pills">
+          <span class="pill">Complex Joins</span><span class="pill">CTEs</span>
+          <span class="pill">Window Functions</span><span class="pill">pandas</span>
+          <span class="pill">NumPy</span><span class="pill">Data Wrangling</span>
+          <span class="pill">Automation</span><span class="pill">Predictive Analytics</span>
+        </div>
+      </div>
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-cat">Visualization</div>
+        <h3>Data Visualization</h3>
+        <div class="skill-pills">
+          <span class="pill">Tableau</span><span class="pill">Power BI</span>
+          <span class="pill">Executive Dashboards</span><span class="pill">KPI Reporting</span>
+          <span class="pill">Exception Reporting</span>
+        </div>
+      </div>
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="skill-cat">Platforms</div>
+        <h3>Data Platforms</h3>
+        <div class="skill-pills">
+          <span class="pill">Snowflake</span><span class="pill">Starburst</span>
+          <span class="pill">Hive</span><span class="pill">Impala</span>
+          <span class="pill">Hadoop</span><span class="pill">Informatica</span>
+          <span class="pill">SQL Server</span><span class="pill">Oracle</span><span class="pill">DB2</span>
+        </div>
+      </div>
+      <div class="skill-card reveal">
+        <div class="skill-cat">AI & Automation</div>
+        <h3>AI-Enabled Workflows</h3>
+        <div class="skill-pills">
+          <span class="pill">Gemini</span><span class="pill">Claude Sonnet</span>
+          <span class="pill">MS Copilot</span><span class="pill">Agentic Modes</span>
+          <span class="pill">n8n Automation</span><span class="pill">Prompt Engineering</span>
+        </div>
+      </div>
+      <div class="skill-card reveal reveal-delay-1">
+        <div class="skill-cat">Cloud</div>
+        <h3>Cloud Infrastructure</h3>
+        <div class="skill-pills">
+          <span class="pill">Azure</span><span class="pill">Snowflake Cloud</span>
+          <span class="pill">Data Pipelines</span><span class="pill">Storage</span>
+          <span class="pill">Compute</span>
+        </div>
+      </div>
+      <div class="skill-card reveal reveal-delay-2">
+        <div class="skill-cat">Governance</div>
+        <h3>Risk & Controls</h3>
+        <div class="skill-pills">
+          <span class="pill">Data Quality</span><span class="pill">Governance</span>
+          <span class="pill">Audit Readiness</span><span class="pill">Regulatory Reporting</span>
+          <span class="pill">Control Testing</span><span class="pill">Lineage</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="section-inner">
+    <div class="section-label reveal">Career</div>
+    <h2 class="section-title reveal">Professional Experience</h2>
+    <div class="timeline">
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="exp-header">
+          <span class="exp-role">Tech Lead</span>
+          <span class="exp-company">@ Citi Bank</span>
+        </div>
+        <div class="exp-meta">Mississauga, Canada &nbsp;·&nbsp; June 2025 – Present</div>
+        <ul class="exp-bullets">
+          <li>Designed automated risk and portfolio analytics pipelines using Hive, Starburst SQL, and Autosys — reducing manual reporting effort by 50%.</li>
+          <li>Defined data quality and governance frameworks that improved compliance accuracy by 25% and reduced audit exceptions by 40%.</li>
+          <li>Built Tableau and Power BI executive dashboards that shortened decision-making cycles by 30%.</li>
+          <li>Drove SQL and Python code efficiency improvements of 35% through hands-on technical leadership.</li>
+          <li>Partnered with senior stakeholders on data lineage, metadata, and regulatory traceability to strengthen audit readiness.</li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="exp-header">
+          <span class="exp-role">Lead Data Analyst</span>
+          <span class="exp-company">@ Citi Bank via Synechron Inc.</span>
+        </div>
+        <div class="exp-meta">Mississauga, Canada &nbsp;·&nbsp; Oct 2023 – June 2025</div>
+        <ul class="exp-bullets">
+          <li>Defined data quality and compliance strategy, reducing data errors by 25% and strengthening audit readiness.</li>
+          <li>Built and optimized SQL and Python workflows, improving query performance by 30%.</li>
+          <li>Delivered AI-driven automation that reduced reporting latency by 40%.</li>
+          <li>Developed executive Tableau and Power BI dashboards for near-real-time portfolio and risk monitoring.</li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="exp-header">
+          <span class="exp-role">Lead Data Analyst</span>
+          <span class="exp-company">@ Fidelity International</span>
+        </div>
+        <div class="exp-meta">Gurugram, India &nbsp;·&nbsp; June 2013 – April 2022</div>
+        <ul class="exp-bullets">
+          <li>Developed predictive analytics and forecasting models achieving 93% accuracy in targeted use cases.</li>
+          <li>Migrated risk and performance datasets to Azure and Snowflake, cutting processing times by 40%.</li>
+          <li>Built Tableau and Power BI dashboards adopted by global finance teams for portfolio visibility.</li>
+          <li>Implemented governance and audit-readiness practices reducing reporting exceptions by 30%.</li>
+          <li>Led standardization of SQL and Python practices across analysts and developers.</li>
+        </ul>
+      </div>
+      <div class="timeline-item reveal">
+        <div class="timeline-dot"></div>
+        <div class="exp-header">
+          <span class="exp-role">Data Analyst</span>
+          <span class="exp-company">@ Birlasoft Limited</span>
+        </div>
+        <div class="exp-meta">Gurugram, India &nbsp;·&nbsp; June 2010 – June 2013</div>
+        <ul class="exp-bullets">
+          <li>Built ETL pipelines using Informatica and SQL Server for portfolio and operational reporting across banking systems.</li>
+          <li>Automated audit and data validation processes, reducing errors by 30% and strengthening regulatory compliance.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-inner">
+    <div class="section-label reveal">Highlights</div>
+    <h2 class="section-title reveal">Key Projects</h2>
+    <div class="projects-grid">
+      <div class="project-card reveal">
+        <div class="project-num">01</div>
+        <h3>Automated Risk Analytics Pipeline</h3>
+        <p>Designed end-to-end automated pipelines at Citi to replace manual reporting workflows. Reduced reporting effort by 50% while improving control monitoring repeatability and audit traceability.</p>
+        <div class="project-tech">
+          <span class="tech-tag">Hive</span><span class="tech-tag">Starburst SQL</span>
+          <span class="tech-tag">Autosys</span><span class="tech-tag">Power BI</span>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-num">02</div>
+        <h3>Cloud Migration & Scalable Reporting</h3>
+        <p>Led migration of risk and performance datasets to Azure and Snowflake at Fidelity International. Cut processing times by 40% and enabled scalable enterprise-level reporting for global finance teams.</p>
+        <div class="project-tech">
+          <span class="tech-tag">Azure</span><span class="tech-tag">Snowflake</span>
+          <span class="tech-tag">Tableau</span><span class="tech-tag">Python</span>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-num">03</div>
+        <h3>Predictive Investment Analytics Model</h3>
+        <p>Built Python-based predictive analytics and forecasting models at Fidelity to support investment targeting and P&L planning. Achieved 93% model accuracy in targeted use cases.</p>
+        <div class="project-tech">
+          <span class="tech-tag">Python</span><span class="tech-tag">pandas</span>
+          <span class="tech-tag">NumPy</span><span class="tech-tag">Forecasting</span>
+        </div>
+      </div>
+      <div class="project-card reveal">
+        <div class="project-num">04</div>
+        <h3>AI-Driven Regulatory Automation</h3>
+        <p>Delivered AI-enabled automation tools using Claude Sonnet, Microsoft Copilot, and n8n workflows to reduce reporting latency by 40% and improve responsiveness to regulatory inquiries.</p>
+        <div class="project-tech">
+          <span class="tech-tag">Claude Sonnet</span><span class="tech-tag">MS Copilot</span>
+          <span class="tech-tag">n8n</span><span class="tech-tag">Prompt Engineering</span>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-1">
+        <div class="project-num">05</div>
+        <h3>Data Governance Framework</h3>
+        <p>Defined and implemented enterprise data quality and governance frameworks at Citi, improving compliance accuracy by 25% and reducing audit exceptions by 40% across regulated reporting lines.</p>
+        <div class="project-tech">
+          <span class="tech-tag">SQL</span><span class="tech-tag">Python</span>
+          <span class="tech-tag">Data Lineage</span><span class="tech-tag">Metadata</span>
+        </div>
+      </div>
+      <div class="project-card reveal reveal-delay-2">
+        <div class="project-num">06</div>
+        <h3>ETL Banking Pipelines — Birlasoft</h3>
+        <p>Architected ETL pipelines using Informatica and SQL Server to support portfolio and operational reporting. Automated audit validation processes, reducing errors by 30%.</p>
+        <div class="project-tech">
+          <span class="tech-tag">Informatica</span><span class="tech-tag">SQL Server</span>
+          <span class="tech-tag">ETL</span><span class="tech-tag">Audit Automation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="section-inner">
+    <div class="section-label reveal">Credentials</div>
+    <h2 class="section-title reveal">Education & Certifications</h2>
+    <div class="edu-grid">
+      <div class="edu-card reveal">
+        <div class="edu-icon">🎓</div>
+        <h3>Master of Management (Data Analytics)</h3>
+        <div class="school">University of Windsor, Canada</div>
+        <div class="year">2022 – 2023</div>
+        <div class="gpa">GPA: 3.7 / 4.0</div>
+      </div>
+      <div class="edu-card reveal reveal-delay-1">
+        <div class="edu-icon">🎓</div>
+        <h3>Bachelor of Technology</h3>
+        <div class="school">Guru Gobind Singh Indraprastha University, New Delhi</div>
+        <div class="year">Graduated 2010</div>
+        <div class="gpa">Electronics & Communication Engineering</div>
+      </div>
+      <div class="edu-card reveal reveal-delay-2">
+        <div class="edu-icon">📜</div>
+        <h3>Professional Certifications</h3>
+        <div class="certs-list">
+          <div class="cert-item"><div class="cert-dot"></div>Tableau Desktop Specialist</div>
+          <div class="cert-item"><div class="cert-dot"></div>Informatica PowerCenter 8.6</div>
+          <div class="cert-item"><div class="cert-dot"></div>Google Data Analytics Certificate</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="section-label reveal">Contact</div>
+    <h2 class="section-title reveal">Let's Connect</h2>
+    <div class="contact-wrapper">
+      <div class="contact-left reveal">
+        <p>
+          I'm open to senior data analytics and leadership roles in financial services, FinTech, and regulated industries. Whether you have an opportunity, a collaboration, or just want to talk data — reach out.
+        </p>
+        <div class="contact-methods">
+          <a href="/cdn-cgi/l/email-protection#29444847075948474d4c501918191e111e694e44484045074a4644" class="contact-method">
+            <div class="method-icon">✉</div>
+            <div>
+              <div class="method-label">Email</div>
+              <div class="method-value"><span class="__cf_email__" data-cfemail="39545857174958575d5c400908090e010e795e54585055175a5654">[email&#160;protected]</span></div>
+            </div>
+          </a>
+          <a href="tel:+12267244355" class="contact-method">
+            <div class="method-icon">☎</div>
+            <div>
+              <div class="method-label">Phone</div>
+              <div class="method-value">+1-226-7244-355</div>
+            </div>
+          </a>
+          <a href="https://linkedin.com/in/manishpandey0" target="_blank" class="contact-method">
+            <div class="method-icon">🔗</div>
+            <div>
+              <div class="method-label">LinkedIn</div>
+              <div class="method-value">linkedin.com/in/manishpandey0</div>
+            </div>
+          </a>
+          <div class="contact-method">
+            <div class="method-icon">⌖</div>
+            <div>
+              <div class="method-label">Location</div>
+              <div class="method-value">Oakville, ON, Canada</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-right reveal reveal-delay-2">
+        <h3>Send a Message</h3>
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Jane Smith">
+        </div>
+        <div class="form-group">
+          <label>Your Email</label>
+          <input type="email" placeholder="jane@company.com">
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea placeholder="Hi Manish, I'd love to discuss an opportunity..."></textarea>
+        </div>
+        <button class="form-submit" onclick="handleSubmit()">→ Send Message</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>Manish Pandey</span> &nbsp;·&nbsp; Data Analytics Leader &nbsp;·&nbsp; Oakville, ON &nbsp;·&nbsp; <a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="3a575b54144a5b545e5f430a0b0a0d020d7a5d575b535614595557">[email&#160;protected]</a>
+</footer>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // Custom cursor
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animateCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) *.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+  document.querySelectorAll('a, button, .skill-card, .project-card, .edu-card, .contact-method').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.width = '20px'; cursor.style.height = '20px'; ring.style.width = '52px'; ring.style.height = '52px'; });
+    el.addEventListener('mouseleave', () => { cursor.style.width = '12px'; cursor.style.height = '12px'; ring.style.width = '36px'; ring.style.height = '36px'; });
+  });
+
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+  }, { threshold: 0.12 });
+  reveals.forEach(el => observer.observe(el));
+
+  // Form submit
+  function handleSubmit() {
+    const btn = document.querySelector('.form-submit');
+    btn.textContent = '✓ Message Sent!';
+    btn.style.background = 'var(--accent3)';
+    setTimeou
